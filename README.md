@@ -8,9 +8,7 @@ Libraries offer reusable functionality through Application Programming Interface
 
 Currently, 56 previously unknown bugs have been found and 36 have been confirmed and fixed in Linux kernel, OpenSSL and packages in Ubuntu 16.04. We are trying our best to apply IMChecker to more programs.
 
-Our research manuscript is available at [doc/imchecker.pdf](doc/imchecker.pdf)
-
-Our tool demonstration is available at [doc/imchecker_tool.pdf](doc/imchecker_tool.pdf)
+Our research manuscript and tool manuscript are under review process of ICSE'19. We will upload them as soon as the review process finish. (Well, you can email us to access them by academic purpose only.)
 
 Our tool demonstration video is available at https://youtu.be/YGDxeyOEVIM
 
@@ -90,7 +88,7 @@ Currently, IMSpec is created by manual writing. However, we ensure that it can b
 
 #### IMChecker
 
-A correct API-usage has to satisfy a set of usage constraints, that is, violations of the constraints may result in API-misuse bugs. IMChecker automatically detects these bugs in source code using the specifications of IMSpec. To process complex, real-world programs, IMChecker’s underlying mechanisms must be scalable while sacrificing the minimal amount of accuracy. We elaborate the design details of IMChecker, including under-constrained symbolic execution with static analysis techniques to build analysis context, methodologies to detect API-misuse bugs in the analysis context and a method to filter false positives using semantic information and usage statistics in our [manuscript](doc/imchecker.pdf). 
+A correct API-usage has to satisfy a set of usage constraints, that is, violations of the constraints may result in API-misuse bugs. IMChecker automatically detects these bugs in source code using the specifications of IMSpec. To process complex, real-world programs, IMChecker’s underlying mechanisms must be scalable while sacrificing the minimal amount of accuracy. We elaborate the design details of IMChecker, including under-constrained symbolic execution with static analysis techniques to build analysis context, methodologies to detect API-misuse bugs in the analysis context and a method to filter false positives using semantic information and usage statistics. 
 
 We use a motivating example to illustrate the workflow of IMChecker. This is an API-misuse bug in OpenSSL reported in [CVE-2015-0288](https://nvd.nist.gov/vuln/detail/CVE-2015-0288). The missing error code check of `X509_get_pubkey()` resulted in a NULL Pointer Dereference bug at line-4.
 
