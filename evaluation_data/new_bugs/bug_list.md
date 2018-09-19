@@ -25,7 +25,8 @@
 |    httping    |    1 |
 |   ipmitool    |    1 |
 | open-vm-tools |    2 |
-|     Total     |   56 |
+|   keepalive   |    2 |
+|     Total     |   58 |
 
 
 
@@ -123,4 +124,9 @@
 
 1. fixed - [291](https://github.com/vmware/open-vm-tools/issues/291)
 2. fixed - [292](https://github.com/vmware/open-vm-tools/issues/292)
+
+## [keepalive](https://github.com/acassen/keepalived)
+
+1. fixed - [1003](https://github.com/acassen/keepalived/issues/1003)
+2. fixed - [1004](https://github.com/acassen/keepalived/issues/1004)
 
