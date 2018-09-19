@@ -1,0 +1,24 @@
+Subject: [PATCH] sound/core.c: fix wrong return code of rsnd_probe() when
+ devm_kzalloc() fails
+
+Function rsnd_probe() defined in sound/soc/sh/rcar/core.c calls devm_kzalloc(). As devm_kzalloc() may return NULL when OOM happens, the caller should return -ENOMEM when devm_kzalloc() fails.
+---
+ sound/soc/sh/rcar/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index f8425d8..fd92906 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1502,7 +1502,7 @@ static int rsnd_probe(struct platform_device *pdev)
+ 	 */
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+-		return -ENODEV;
++		return -ENOMEM;
+ 
+ 	priv->pdev	= pdev;
+ 	priv->flags	= (unsigned long)of_device_get_match_data(dev);
+-- 
+2.6.4
+

@@ -1,0 +1,24 @@
+Subject: [PATCH] clk-wm831x.c: fix wrong return value when wm831x_reg_read()
+ fails
+
+Function wm831x_fll_is_prepared() defined in drivers/clk/clk-wm831x.c returns true when function wm831x_reg_read() fails (should return false).
+---
+ drivers/clk/clk-wm831x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/clk-wm831x.c b/drivers/clk/clk-wm831x.c
+index 1467695..11c2d19 100644
+--- a/drivers/clk/clk-wm831x.c
++++ b/drivers/clk/clk-wm831x.c
+@@ -79,7 +79,7 @@ static int wm831x_fll_is_prepared(struct clk_hw *hw)
+ 	if (ret < 0) {
+ 		dev_err(wm831x->dev, "Unable to read FLL_CONTROL_1: %d\n",
+ 			ret);
+-		return true;
++		return false;
+ 	}
+ 
+ 	return (ret & WM831X_FLL_ENA) != 0;
+-- 
+2.6.4
+

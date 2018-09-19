@@ -1,0 +1,180 @@
+# ref: http://www.cplusplus.com/reference/cstdio/sscanf/?kw=sscanf
+- Spec:
+  Target: fgets(_, _, _) -> char*
+  Post:
+    # success situation
+    - fgets_arg0 != null;
+    # failure situation
+    - fgets_arg0 == null
+
+
+- Spec:
+  Target: fprintf(_, _) -> int
+  Post:
+    - fprintf_arg0 >= 0;
+    - fprintf_arg0 < 0
+
+
+- Spec:
+  Target: fputc(_, _) -> int
+  Post:
+    - fputc_arg0 != -1;
+    - fputc_arg0 == -1
+
+
+- Spec:
+  Target: fputs(_, _) -> int
+  Post:
+    - fputs_arg0 != -1;
+    - fputs_arg0 == -1
+
+
+- Spec:
+  Target: fread(_, _, _, _) -> size_t
+# omit implies, the return value has to be checked
+  Post:
+
+
+# in LLVM, it will be replaced by __isoc99_fscanf
+- Spec:
+  Target: fscanf(_, _) -> int
+  Post:
+    - fscanf_arg0 != -1;
+    - fscanf_arg0 == -1
+
+
+- Spec:
+  Target: fwrite(_, _, _, _) -> size_t
+# omit implies, the return value has to be checked
+  Post:
+
+
+- Spec:
+  Target: putc(_, _) -> int
+  Post:
+    - putc_arg0 != -1;
+    - putc_arg0 == -1
+
+
+- Spec:
+  Target: putchar(_) -> int
+  Post:
+    - putchar_arg0 != -1;
+    - putchar_arg0 == -1
+
+
+- Spec:
+  Target: puts(_) -> int
+  Post:
+    - puts_arg0 != -1;
+    - puts_arg0 == -1
+
+
+- Spec:
+  Target: remove(_) -> int
+  Post:
+    - remove_arg0 == 0;
+    - remove_arg0 == -1
+
+
+- Spec:
+  Target: rename(_, _) -> int
+  Post:
+    - rename_arg0 == 0;
+    - rename_arg0 != 0
+
+
+
+# in LLVM, it will be replaced by __isoc99_scanf
+- Spec:
+  Target: scanf(_, _) -> int
+  Post:
+    - scanf_arg0 != -1;
+    - scanf_arg0 == -1
+
+
+- Spec:
+  Target: snprintf(_, _, _) -> int
+  Post:
+    - snprintf_arg0 >= 0;
+    - snprintf_arg0 < 0
+
+
+# in LLVM, it will be replaced by __isoc99_sscanf
+- Spec:
+  Target: sscanf(_, _) -> int
+  Post:
+    - sscanf_arg0 != -1;
+    - sscanf_arg0 == -1
+
+
+- Spec:
+  Target: calloc(_, _) -> _
+  Ref: free(_) -> _
+  Post:
+    - calloc_arg0 != NULL, CALL(free':' calloc_arg0 == free_arg1);
+    - calloc_arg0 == NULL
+
+
+- Spec:
+  Target: malloc(_, _) -> _
+  Ref: free(_) -> _
+  Post:
+    - malloc_arg0 != NULL, ENDWITH(free':' malloc_arg0 == free_arg1);
+    - malloc_arg0 == NULL
+
+
+# used for double free
+- Spec:
+  Target: malloc(_, _) -> _
+  Ref: free(_) -> _
+  Post:
+    - malloc_arg0 != NULL, CALL(free':' malloc_arg0 == free_arg1);
+    - malloc_arg0 == NULL
+
+
+- Spec:
+  Target: realloc(_, _) -> _
+  Ref: free(_) -> _
+  Post:
+    - realloc_arg0 != NULL, CALL(free':' realloc_arg0 == free_arg1);
+    - realloc_arg0 == NULL
+
+
+- Spec:
+  Target: realloc(_, _) -> _
+  Ref: free(_) -> _
+  Post:
+    - realloc_arg0 != NULL, CALL(free':' realloc_arg0 == free_arg1);
+    - realloc_arg0 == NULL
+
+
+- Spec:
+  Target: open(_, _) -> _
+  Ref: close(_) -> _
+  Post:
+    - open_arg0 != -1, CALL(close':' open_arg0 == close_arg1);
+    - open_arg0 == -1
+
+
+- Spec:
+  Target: fopen(_, _) -> _
+  Ref: fclose(_) -> _
+  Post:
+    - fopen_arg0 != -1, CALL(fclose':' fopen_arg0 == fclose_arg1);
+    - fopen_arg0 == NULL
+
+
+- Spec:
+  Target: _wfopen(_, _) -> _
+  Ref: fclose(_) -> _
+  Post:
+    - _wfopen_arg0 != NULL, CALL(fclose':' _wfopen_arg0 == fclose_arg1);
+    - _wfopen_arg0 == NULL
+
+
+# free a heap pointer
+- Spec:
+  Target: free(_,) -> _
+  Pre:
+    - MEMTYPE(free_arg1) == HEAP

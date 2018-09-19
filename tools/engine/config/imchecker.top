@@ -1,0 +1,4 @@
+phase.manager.config=config/imchecker.phase
+phase.manager.executionType=SEQUENTIAL
+phase.result.outputMode=XML
+output.disable=true

@@ -1,0 +1,25 @@
+Subject: [PATCH] tlb_uv.c: Add missing return value check to prevent nptr
+ dereference.
+
+Function init_per_cpu() defined in arch/x86/platform/uv/tlb_uv.c calls kzalloc() to allocate memory for variable uvhub_mask which is used in function get_cpu_topology() and function summarize_uvhub_sockets() later. However, none of the 3 functions mentioned above checks whether uvhub_mask is NULL. As kzalloc() may return NULL, when get_cpu_topology() and summarize_uvhub_sockets() tries to dereference this pointer, it may cause NULL pointer dereference bug.
+---
+ arch/x86/platform/uv/tlb_uv.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/platform/uv/tlb_uv.c b/arch/x86/platform/uv/tlb_uv.c
+index ca446da..b85e2d8 100644
+--- a/arch/x86/platform/uv/tlb_uv.c
++++ b/arch/x86/platform/uv/tlb_uv.c
+@@ -2147,6 +2147,9 @@ static int __init init_per_cpu(int nuvhubs, int base_part_pnode)
+ 	memset(uvhub_descs, 0, nuvhubs * sizeof(struct uvhub_desc));
+ 	uvhub_mask = kzalloc((nuvhubs+7)/8, GFP_KERNEL);
+ 
++	if (!uvhub_mask)
++		goto fail;
++
+ 	if (get_cpu_topology(base_part_pnode, uvhub_descs, uvhub_mask))
+ 		goto fail;
+ 
+-- 
+2.6.4
+

@@ -1,0 +1,58 @@
+working_dir : /Users/guzuxing/Code/open_source/openssl
+filter :
+  branch : master
+  restrict :
+    commit_count : -1  # commit_count limit or -1 to ignore limit
+    # precise date or -1 to ignore date bound
+    from_date : 2015-01-01
+    to_date : -1
+  key_words :
+    first :
+      - bug
+      - fix
+      - check
+      - issue
+      - mistake
+      - incorrect
+      - fault
+      - defect
+      - error
+      - missing
+      - output
+      - CVE
+      - not null
+      - missing
+      - null
+    second :
+      - check return
+      - check missing
+      - error return
+      - error path
+      - error handle
+      - error check
+      - error propagation
+      - error message
+      - memory leak
+      - mem leak
+      - missing check
+      - missing output
+      - not null
+      - precondition
+      - parameter
+      - unchecked condition
+      - unchecked return 
+      - SSL
+  LOC : 20
+  NOF : 3
+  file_name :
+    - test
+    - news
+    - contribute
+    - configuration
+  ignore_case : True
+output :
+  dir : /Users/guzuxing/Code/open_source/gitgrabber_result/openssl
+  file_name : openssl_report.db
+  # diff_xxx fields denote whether outputting diff patches in corresponding folders
+  diff_mid : True # whether outputting middle result
+  diff_result : True  # whether outputting final result

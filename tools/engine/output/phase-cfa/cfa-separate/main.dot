@@ -1,0 +1,22 @@
+digraph main {
+label="main"
+130 [label="N130\n(rp:0, ep:0)\nexit", shape="doublecircle"]
+131 [label="N131\n(rp:9, ep:9)\nentry", shape="doublecircle"]
+131 -> 134 [label="%fileName = alloca i8*, align 8"]
+134 [label="N134\n(rp:8, ep:8)", shape="circle"]
+134 -> 135 [label="store i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i32 0, i32 0), i8** %fileName, align 8"]
+135 [label="N135\n(rp:7, ep:7)", shape="circle"]
+135 -> 136 [label="%0 = load i8*, i8** %fileName, align 8"]
+136 [label="N136\n(rp:6, ep:6)", shape="circle"]
+136 -> 137 [label="bad1 --@-- %call = call i32 @bad1(i8* %0)", style="dashed", color="blue"]
+137 [label="N137\n(rp:5, ep:5)", shape="circle"]
+137 -> 138 [label="bad2 --@-- %call1 = call i32 @bad2()", style="dashed", color="blue"]
+138 [label="N138\n(rp:4, ep:4)", shape="circle"]
+138 -> 139 [label="%1 = load i8*, i8** %fileName, align 8"]
+139 [label="N139\n(rp:3, ep:3)", shape="circle"]
+139 -> 140 [label="good1 --@-- %call2 = call i32 @good1(i8* %1)", style="dashed", color="blue"]
+140 [label="N140\n(rp:2, ep:2)", shape="circle"]
+140 -> 141 [label="good2 --@-- %call3 = call i32 @good2()", style="dashed", color="blue"]
+141 [label="N141\n(rp:1, ep:1)", shape="circle"]
+141 -> 130 [label="ret i32 0"]
+}

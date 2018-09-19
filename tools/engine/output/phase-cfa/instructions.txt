@@ -1,0 +1,8 @@
+AllocaInst
+BitCastInst
+CallInst
+GetElementPtrInst
+ICmpInst
+LoadInst
+ReturnInst
+StoreInst

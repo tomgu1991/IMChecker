@@ -1,0 +1,15 @@
+<codeAnalysisReport version="17.06.20.0001">
+   <weakness class="java.util.ArrayList">
+      <weaknessInfo name="" desc=""/>
+   </weakness>
+   <target>
+      <base></base>
+      <originalLines>0</originalLines>
+      <preprocessedLines>0</preprocessedLines>
+   </target>
+   <execution>
+      <timestamp>0</timestamp>
+      <consumedTime>0</consumedTime>
+   </execution>
+   <results/>
+</codeAnalysisReport>

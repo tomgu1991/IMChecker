@@ -1,0 +1,24 @@
+Subject: [PATCH] gpio-tegra.c: fix wrong return code of tegra_gpio_probe()
+ when devm_kzalloc() fails
+
+Function tegra_gpio_probe() defined in drivers/gpio/gpio-tegra.c calls devm_kzalloc(). As devm_kzalloc() may return NULL when OOM happens, the caller should return -ENOMEM when devm_kzalloc() fails.
+---
+ drivers/gpio/gpio-tegra.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+index 47dbd19..f7a9ae7 100644
+--- a/drivers/gpio/gpio-tegra.c
++++ b/drivers/gpio/gpio-tegra.c
+@@ -561,7 +561,7 @@ static int tegra_gpio_probe(struct platform_device *pdev)
+ 
+ 	tgi = devm_kzalloc(&pdev->dev, sizeof(*tgi), GFP_KERNEL);
+ 	if (!tgi)
+-		return -ENODEV;
++		return -ENOMEM;
+ 
+ 	tgi->soc = of_device_get_match_data(&pdev->dev);
+ 	tgi->dev = &pdev->dev;
+-- 
+2.6.4
+

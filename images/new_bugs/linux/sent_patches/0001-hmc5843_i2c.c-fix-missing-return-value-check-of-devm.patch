@@ -1,0 +1,39 @@
+Subject: [PATCH] hmc5843_i2c.c: fix missing return value check of
+ devm_regmap_init_i2c()
+
+Function hmc5843_i2c_probe() defined in drivers/iio/magnetometer/hmc5843_i2c.c calls devm_regmap_init_i2c() to initialise managed register map. As the return value of devm_regmap_init_i2c() will be an ERR_PTR() on error, the return value must be checked against NULL.
+---
+ drivers/iio/magnetometer/hmc5843_i2c.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/magnetometer/hmc5843_i2c.c b/drivers/iio/magnetometer/hmc5843_i2c.c
+index 3de7f44..4911cf8 100644
+--- a/drivers/iio/magnetometer/hmc5843_i2c.c
++++ b/drivers/iio/magnetometer/hmc5843_i2c.c
+@@ -14,6 +14,7 @@
+ #include <linux/regmap.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/triggered_buffer.h>
++#include <linux/device.h>
+ 
+ #include "hmc5843.h"
+ 
+@@ -58,8 +59,13 @@ static const struct regmap_config hmc5843_i2c_regmap_config = {
+ static int hmc5843_i2c_probe(struct i2c_client *cli,
+ 			     const struct i2c_device_id *id)
+ {
+-	return hmc5843_common_probe(&cli->dev,
+-			devm_regmap_init_i2c(cli, &hmc5843_i2c_regmap_config),
++	struct regmap *regmap;
++	regmap = devm_regmap_init_i2c(cli, &hmc5843_i2c_regmap_config);
++	if (IS_ERR(regmap)) {
++		dev_err(&cli->dev, "Failed to initialize i2c regmap\n");
++		return PTR_ERR(regmap);
++	}
++	return hmc5843_common_probe(&cli->dev, regmap,
+ 			id->driver_data, id->name);
+ }
+ 
+-- 
+2.6.4
+

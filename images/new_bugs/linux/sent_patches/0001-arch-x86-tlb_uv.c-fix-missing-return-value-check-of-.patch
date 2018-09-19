@@ -1,0 +1,25 @@
+Subject: [PATCH] arch/x86 tlb_uv.c: fix missing return value check of
+ kzalloc()
+
+kzalloc() may return NULL on OOM. Since the later usages of uvhub_mask don't check whether it is non-NULL, it may cause nptr deref if uvhub_mask = kzalloc() fails. Fix this by adding return value check.
+---
+ arch/x86/platform/uv/tlb_uv.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/platform/uv/tlb_uv.c b/arch/x86/platform/uv/tlb_uv.c
+index ca446da..b85e2d8 100644
+--- a/arch/x86/platform/uv/tlb_uv.c
++++ b/arch/x86/platform/uv/tlb_uv.c
+@@ -2147,6 +2147,9 @@ static int __init init_per_cpu(int nuvhubs, int base_part_pnode)
+ 	memset(uvhub_descs, 0, nuvhubs * sizeof(struct uvhub_desc));
+ 	uvhub_mask = kzalloc((nuvhubs+7)/8, GFP_KERNEL);
+ 
++	if (!uvhub_mask)
++		goto fail;
++
+ 	if (get_cpu_topology(base_part_pnode, uvhub_descs, uvhub_mask))
+ 		goto fail;
+ 
+-- 
+2.6.4
+

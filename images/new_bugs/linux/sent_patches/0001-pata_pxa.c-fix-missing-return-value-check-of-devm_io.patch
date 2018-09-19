@@ -1,0 +1,25 @@
+Subject: [PATCH] pata_pxa.c: fix missing return value check of devm_ioremap()
+
+Function pxa_ata_probe() defined in drivers/ata/pata_pxa.c calls devm_ioremap() which may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ drivers/ata/pata_pxa.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/ata/pata_pxa.c b/drivers/ata/pata_pxa.c
+index e8b6a2e..27577a4 100644
+--- a/drivers/ata/pata_pxa.c
++++ b/drivers/ata/pata_pxa.c
+@@ -240,6 +240,10 @@ static int pxa_ata_probe(struct platform_device *pdev)
+ 	ap->ioaddr.bmdma_addr	= devm_ioremap(&pdev->dev, dma_res->start,
+ 						resource_size(dma_res));
+ 
++	if (!ap->ioaddr.cmd_addr || !ap->ioaddr.ctl_addr || !ap->ioaddr.bmdma_addr)
++		return -ENOMEM;
++
++
+ 	/*
+ 	 * Adjust register offsets
+ 	 */
+-- 
+2.6.4
+

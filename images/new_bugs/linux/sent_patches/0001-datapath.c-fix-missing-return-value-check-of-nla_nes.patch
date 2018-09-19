@@ -1,0 +1,33 @@
+Subject: [PATCH] datapath.c: fix missing return value check of
+ nla_nest_start()
+
+Function queue_userspace_packet() defined in net/openvswitch/datapath.c calls nla_nest_start() to allocate memory for struct nlattr which is dereferenced immediately. As nla_nest_start() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ net/openvswitch/datapath.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 0f5ce77..ff4457d 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -460,6 +460,8 @@ static int queue_userspace_packet(struct datapath *dp, struct sk_buff *skb,
+ 
+ 	if (upcall_info->egress_tun_info) {
+ 		nla = nla_nest_start(user_skb, OVS_PACKET_ATTR_EGRESS_TUN_KEY);
++		if (!nla)
++			return -EMSGSIZE;
+ 		err = ovs_nla_put_tunnel_info(user_skb,
+ 					      upcall_info->egress_tun_info);
+ 		BUG_ON(err);
+@@ -468,6 +470,8 @@ static int queue_userspace_packet(struct datapath *dp, struct sk_buff *skb,
+ 
+ 	if (upcall_info->actions_len) {
+ 		nla = nla_nest_start(user_skb, OVS_PACKET_ATTR_ACTIONS);
++		if (!nla)
++			return -EMSGSIZE;
+ 		err = ovs_nla_put_actions(upcall_info->actions,
+ 					  upcall_info->actions_len,
+ 					  user_skb);
+-- 
+2.6.4
+

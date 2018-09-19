@@ -1,0 +1,258 @@
+# ref: https://www.openssl.org/docs/manmaster/man3/
+
+# check the return value of ASN1_INTEGER_get
+Spec:
+  Target: ASN1_INTEGER_get(_) -> int
+  Post:
+    # success
+    - ASN1_INTEGER_get_arg0 > 0;
+    # failure
+    - ASN1_INTEGER_get_arg0 <= 0
+
+
+# check the return value of ASN1_INTEGER_set
+Spec:
+  Target: ASN1_INTEGER_set(_) -> int
+  Post:
+    # success
+    - ASN1_INTEGER_set_arg0 == 1;
+    # failure
+    - ASN1_INTEGER_set_arg0 == 0
+
+
+# check the return value of ASN1_object_size
+Spec:
+  Target: ASN1_object_size(_, _, _) -> int
+  Post:
+    # success
+    - ASN1_object_size_arg0 != -1;
+    # failure
+    - ASN1_object_size_arg0 == -1
+
+
+# check the return value of BN_set_word
+Spec:
+  Target: BN_set_word(_, _) -> int
+  Post:
+    # success
+    - BN_set_word_arg0 == 1;
+    # failure
+    - BN_set_word_arg0 != 0
+
+
+# check the return value of EVP_PKEY_get0_DH
+Spec:
+  Target: EVP_PKEY_get0_DH(_) -> _
+  Pre:
+    - EVP_PKEY_get0_DH_arg1 != NULL
+  Post:
+    # success
+    - EVP_PKEY_get0_DH_arg0 != NULL;
+    # failure
+    - EVP_PKEY_get0_DH_arg0 == NULL
+
+
+# check the return value of EC_GROUP_NEW_by_curve_name
+# if not null should free
+Spec:
+  Target: EC_GROUP_NEW_by_curve_name(_) -> _
+  Ref: EC_GROUP_free(_) -> _
+  Post:
+    # success
+    - EC_GROUP_NEW_by_curve_name_arg0 != NULL, Call(EC_GROUP_free':'  EC_GROUP_NEW_by_curve_name_arg0 == EC_GROUP_free_arg1);
+    # failure
+    - EC_GROUP_NEW_by_curve_name_arg0 == NULL
+
+
+# check the return value of ASN1_INTEGER_to_BN
+Spec:
+  Target: ASN1_INTEGER_to_BN(_, _) -> _
+  Post:
+    # success
+    - ASN1_INTEGER_to_BN_arg0 != NULL;
+    # failure
+    - ASN1_INTEGER_to_BN_arg0 == NULL
+
+
+# check the return value of BN_sub
+Spec:
+  Target: BN_sub(_) -> _
+  Post:
+    # success
+    - BN_sub_arg0 == 1;
+    # failure
+    - BN_sub_arg0 == 0
+
+
+# check the return value of OBJ_nid2obj
+Spec:
+  Target: OBJ_nid2obj(_) -> _
+  Post:
+    # success
+    - OBJ_nid2obj_arg0 != NULL;
+    # failure
+    - OBJ_nid2obj_arg0 == NULL
+
+
+# check the return value of CRYPTO_realloc
+# if not null should free
+Spec:
+  Target: CRYPTO_realloc(_, _, _, _) -> _
+  Ref: CRYPTO_free(_, _, _) -> _
+  Post:
+    # success
+    - CRYPTO_realloc_arg0 != NULL, Call(CRYPTO_free':'  CRYPTO_realloc_arg0 == CRYPTO_free_arg1);
+    # failure
+    - CRYPTO_realloc_arg0 == NULL
+
+
+# check the return value of EC_GROUP_dup
+# if not null should free
+Spec:
+  Target: EC_GROUP_dup(_) -> _
+  Ref: EC_GROUP_free(_) -> _
+  Post:
+    # success
+    - EC_GROUP_dup_arg0 != NULL, Call(EC_GROUP_free':'  EC_GROUP_dup_arg0 == EC_GROUP_free_arg1);
+    # failure
+    - EC_GROUP_dup_arg0 == NULL
+
+
+# check the return value of ASN1_TIME_diff
+Spec:
+  Target: ASN1_TIME_diff(_，_, _, ) -> _
+  Post:
+    # success
+    - ASN1_TIME_diff_arg0 == 1;
+    # failure
+    - ASN1_TIME_diff_arg0 == 0
+
+
+# check the return value of sk_SSL_CIPHER_new_null
+Spec:
+  Target: sk_SSL_CIPHER_new_null() -> _
+  Post:
+    # success
+    - sk_SSL_CIPHER_new_null_arg0 != NULL;
+    # failure
+    - sk_SSL_CIPHER_new_null_arg0 == NULL
+
+
+# check the return value of BN_CTX_get
+Spec:
+  Target: BN_CTX_get(_) -> _
+  Post:
+
+
+# check the return value of X509_NAME_ENTRY_new
+Spec:
+  Target: X509_NAME_ENTRY_new() -> _
+  Post:
+
+
+# check the return value of i2a_ASN1_OBJECT
+Spec:
+  Target: i2a_ASN1_OBJECT(_, _) -> _
+  Post:
+    # success
+    - i2a_ASN1_OBJECT_arg0 >= 0;
+    # failure
+    - i2a_ASN1_OBJECT_arg0 < 0
+
+
+# check the return value of OBJ_txt2obj
+Spec:
+  Target: OBJ_txt2obj(_, _) -> _
+  Post:
+
+
+# check the return value of ASN1_STRING_to_UTF8
+Spec:
+  Target: ASN1_STRING_to_UTF8(_, _) -> _
+  Post:
+    # success
+    - ASN1_STRING_to_UTF8_arg0 >= 0;
+    # failure
+    - ASN1_STRING_to_UTF8_arg0 < 0
+
+
+# check the return value of OBJ_dup
+Spec:
+  Target: OBJ_dup(_) -> _
+  Post:
+
+
+# check the return value of i2s_ASN1_INTEGER
+Spec:
+  Target: i2s_ASN1_INTEGER(_, _) -> _
+  Post:
+
+
+# check the return value of X509_STORE_CTX_new
+Spec:
+  Target: X509_STORE_CTX_new() -> _
+  Post:
+    # success
+    - X509_STORE_CTX_new_arg0 != NULL;
+    # failure
+    - X509_STORE_CTX_new_arg0 == NULL
+
+
+# check the return value of ASN1_GENERALIZEDTIME_set_string
+Spec:
+  Target: ASN1_GENERALIZEDTIME_set_string(_，_) -> _
+  Post:
+
+
+# check the return value of gmtime_r
+Spec:
+  Target: gmtime_r(_, _) -> _
+  Post:
+    # success
+    - gmtime_r_arg0 != NULL;
+    # failure
+    - gmtime_r_arg0 == NULL
+
+
+# check the return value of bn_wexpand
+Spec:
+  Target: bn_wexpand(_, _) -> _
+  Post:
+
+
+# check the return value of EVP_CipherInit_ex
+Spec:
+  Target: EVP_CipherInit_ex(_, _, _, _, _, _) -> _
+  Post:
+
+
+# check the return value of gmtime_r
+Spec:
+  Target: CRYPTO_THREAD_lock_new() -> _
+  Post:
+    # success
+    - CRYPTO_THREAD_lock_new_arg0 != NULL;
+    # failure
+    - CRYPTO_THREAD_lock_new_arg0 == NULL
+
+
+# check the return value of BUF_MEM_grow_clean
+Spec:
+  Target: BUF_MEM_grow_clean(_, _) -> _
+  Post:
+
+
+# check the return value of ssl_generate_pkey_arg0
+Spec:
+  Target: ssl_generate_pkey_arg0() -> _
+  Post:
+    # success
+    - ssl_generate_pkey_arg0_arg0 != NULL;
+    # failure
+    - ssl_generate_pkey_arg0_arg0 == NULL
+
+
+# check the return value of PACKET_buf_init
+Spec:
+  Target: PACKET_buf_init(_, _, _) -> _
+  Post:

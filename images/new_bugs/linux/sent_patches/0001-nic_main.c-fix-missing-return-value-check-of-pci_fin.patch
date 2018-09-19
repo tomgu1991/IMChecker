@@ -1,0 +1,26 @@
+Subject: [PATCH] nic_main.c: fix missing return value check of
+ pci_find_ext_capability()
+
+Function nic_num_sqs_en() defined in drivers/net/ethernet/cavium/thunder/nic_main.c calls pci_find_ext_capability(). Function pci_find_ext_capability() returns the address of the requested extended capability structure within the device's PCI configuration space or 0 if the device does not support it. The return value of this function should be checked against 0.
+---
+ drivers/net/ethernet/cavium/thunder/nic_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/cavium/thunder/nic_main.c b/drivers/net/ethernet/cavium/thunder/nic_main.c
+index 55af04f..dc0d960 100644
+--- a/drivers/net/ethernet/cavium/thunder/nic_main.c
++++ b/drivers/net/ethernet/cavium/thunder/nic_main.c
+@@ -1227,6 +1227,10 @@ static int nic_num_sqs_en(struct nicpf *nic, int vf_en)
+ 		sqs_per_vf = MAX_SQS_PER_VF;
+ 
+ 	pos = pci_find_ext_capability(nic->pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (!pos) {
++		dev_err(&nic->pdev->dev, "SRIOV capability is not found in PCIe config space\n");
++		return -ENODEV;
++	}
+ 	pci_read_config_word(nic->pdev, (pos + PCI_SRIOV_TOTAL_VF), &total_vf);
+ 	return min(total_vf - vf_en, vf_en * sqs_per_vf);
+ }
+-- 
+2.6.4
+

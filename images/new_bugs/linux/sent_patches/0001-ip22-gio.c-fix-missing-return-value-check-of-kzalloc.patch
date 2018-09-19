@@ -1,0 +1,23 @@
+Subject: [PATCH] ip22-gio.c: fix missing return value check of kzalloc()
+
+Function ip22_check_gio() defined in arch/mips/sgi-ip22/ip22-gio.c calls kzalloc() to allocate memory for struct gio_device which is dereferenced immediately. As kzalloc() may return NULL when OOM happens, this code piece may cause NULL pointer dereference bug.
+---
+ arch/mips/sgi-ip22/ip22-gio.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index b225033..ec32d75 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+ 		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
+ 		       slotno, name, id);
+ 		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
++		if (!gio_dev)
++			return;
+ 		gio_dev->name = name;
+ 		gio_dev->slotno = slotno;
+ 		gio_dev->id.id = id;
+-- 
+2.6.4
+

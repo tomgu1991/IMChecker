@@ -1,0 +1,14 @@
+- Spec:
+    Post:
+    - fopen_arg0 == NULL, RETURN(ERROR)
+    - 'fopen_arg0 != NULL, CALL(fclose: fopen_arg0 == fclose_arg1)'
+    Pre:
+    - fopen_arg1 != NULL
+    Ref:
+    - fclose(_) -> _
+    Target: fopen(_, _) -> _
+- Spec:
+    Post:
+    - fgets_arg0 == NULL, RETURN(ERROR)
+    - fgets_arg0 != NULL
+    Target: fgets(_, _, _) -> _

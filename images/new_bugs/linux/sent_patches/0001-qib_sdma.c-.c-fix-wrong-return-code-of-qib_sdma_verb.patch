@@ -1,0 +1,27 @@
+Subject: [PATCH] qib_sdma.c: .c: fix wrong return code of
+ qib_sdma_verbs_send() when dma_mapping_error() fails
+
+Function qib_sdma_verbs_send() defined in drivers/infiniband/hw/qib/qib_sdma.c returns wrong error code when function dma_mapping_error() fails. The correct return code when dma_mapping_error() fails is -ENOMEM but the code leaves the return code to be 0.
+---
+ drivers/infiniband/hw/qib/qib_sdma.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/qib/qib_sdma.c b/drivers/infiniband/hw/qib/qib_sdma.c
+index d0723d4..7424e88 100644
+--- a/drivers/infiniband/hw/qib/qib_sdma.c
++++ b/drivers/infiniband/hw/qib/qib_sdma.c
+@@ -576,8 +576,10 @@ int qib_sdma_verbs_send(struct qib_pportdata *ppd,
+ 		dw = (len + 3) >> 2;
+ 		addr = dma_map_single(&ppd->dd->pcidev->dev, sge->vaddr,
+ 				      dw << 2, DMA_TO_DEVICE);
+-		if (dma_mapping_error(&ppd->dd->pcidev->dev, addr))
++		if (dma_mapping_error(&ppd->dd->pcidev->dev, addr)) {
++			ret = -ENOMEM;
+ 			goto unmap;
++		}
+ 		sdmadesc[0] = 0;
+ 		make_sdma_desc(ppd, sdmadesc, (u64) addr, dw, dwoffset);
+ 		/* SDmaUseLargeBuf has to be set in every descriptor */
+-- 
+2.6.4
+

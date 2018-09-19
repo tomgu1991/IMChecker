@@ -1,0 +1,4 @@
+IRC: fgets: fgets_arg0==NULL,RETURN(0); fgets_arg0!=NULL
+IPC: fopen: fopen_arg1!=NULL
+ICC: fopen: fopen_arg0!=NULL;CALL(fclose:fopen_arg0==fclose_arg1)
+IRC: fopen: fopen_arg0!=NULL; fopen_arg0==NULL, RETURN(0)

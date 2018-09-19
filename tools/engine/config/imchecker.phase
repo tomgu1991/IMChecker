@@ -1,0 +1,27 @@
+# This is the initial config file for phase
+.SET
+DIR = cn.edu.thu.tsmart.core.phase
+.TES
+
+.DEF cfa
+.TYPE = $(DIR).CFACreatePhase
+analysis.summaryEdges = true
+.FED
+
+.DEF summary
+.TYPE = $(DIR).imchecker.IMCheckerSummaryComputationPhase
+.FED
+
+.DEF basic
+.TYPE = $(DIR).imchecker.IMCheckerRunPhase
+phase.imchecker.analysis = config/imchecker.analysis
+.FED
+
+.DEF result
+.TYPE = $(DIR).imchecker.IMCheckerAnalysisPhase
+.FED
+
+.RUN
+summary : cfa;
+basic : summary;
+result : basic;

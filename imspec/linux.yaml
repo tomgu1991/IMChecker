@@ -1,0 +1,100 @@
+# check the return value of kzalloc, if NULL, return -ENOMEM
+# Note: in llvm, -ENOMEM will be preprocessed as -12
+Spec:
+  Target: kzalloc(_, _) -> _
+  Post:
+    - kzalloc_arg0 == NULL, Return(-ENOMEM)
+
+
+# check the return value of devm_kzalloc, if NULL, return -ENOMEM
+# Note: in llvm, -ENOMEM will be preprocessed as -12
+Spec:
+  Target: devm_kzalloc(_, _, _) -> _
+  Post:
+    - devm_kzalloc_arg0 == NULL, Return(-ENOMEM)
+
+
+# check the return value of alloc_disk, if NULL, return -ENOMEM
+# Note: in llvm,alloc_disk will be preprocessed as __alloc_disk_node; -ENOMEM will be preprocessed as -12
+Spec:
+  Target: alloc_disk(_) -> _
+  Post:
+    - alloc_disk_arg0 == NULL, Return(-ENOMEM)
+
+
+# check the return value of devm_clk_get, that is return value of devm_clk_get should be in a cmpInst in LLVM
+Spec:
+  Target: devm_clk_get(_) -> _
+  Post:
+
+
+# check the return value of devm_regmap_init_i2c, that is return value of devm_regmap_init_i2c should be in a cmpInst in LLVM
+Spec:
+  Target: devm_regmap_init_i2c(_, _) -> _
+  Post:
+
+
+# check the return value of devm_ioremap, that is return value of devm_ioremap should be in a cmpInst in LLVM
+Spec:
+  Target: devm_ioremap(_, _, _) -> _
+  Post:
+
+
+# check the return value of nla_nest_start, if NULL, return -EMSGSIZE
+# Note: in llvm,; -EMSGSIZE will be preprocessed as -40
+Spec:
+  Target: nla_nest_start(_, _) -> _
+  Post:
+    - nla_nest_start_arg0 == NULL, Return(-EMSGSIZE)
+
+
+# check the return value of alloc_skb, that is return value of alloc_skb should be in a cmpInst in LLVM
+Spec:
+  Target: alloc_skb(_, ) -> _
+  Post:
+    - alloc_skb_arg0 == NULL
+
+
+# check the return value of __send_and_alloc_skb, that is return value of __send_and_alloc_skb should be in a cmpInst in LLVM
+Spec:
+  Target: __send_and_alloc_skb(_, _) -> int
+  Post:
+    - __send_and_alloc_skb_arg0 == 0
+
+
+# check the return value of pci_find_ext_capability, that is return value of pci_find_ext_capability should be in a cmpInst in LLVM
+Spec:
+  Target: pci_find_ext_capability(_, _) -> int
+  Post:
+    - pci_find_ext_capability_arg0 == 0
+
+
+# check the return value of ida_pre_get, that is return value of ida_pre_get should be in a cmpInst in LLVM
+Spec:
+  Target: ida_pre_get(_, _) -> int
+  Post:
+    - ida_pre_get_arg0 == 0, Return(-ENOMEM)
+
+
+# check the return value of ida_pre_get, that is return value of ida_pre_get should be in a cmpInst in LLVM
+Spec:
+  Target: wm831x_reg_read(_, _) -> int
+  Post:
+    # wm831x_reg_read success
+    - wm831x_reg_read_arg0 >= 0;
+    # wm831x_reg_read failure
+    - wm831x_reg_read_arg0 < 0
+
+
+# check the return value of dma_mapping_error, that is return value of dma_mapping_error should be in a cmpInst in LLVM
+Spec:
+  Target: dma_mapping_error(_, _) -> int
+  Post:
+
+
+# check the return value of get_zeroed_page, if NULL, return -ENOMEM
+# Note: in llvm, -ENOMEM will be preprocessed as -12
+Spec:
+  Target: get_zeroed_page(_) -> _
+  Post:
+    - get_zeroed_page_arg0 == 0, Return(-ENOMEM)

@@ -1,0 +1,19 @@
+cpa=cpa.arg.ARGCPA
+
+# *.cpa child of *
+ARGCPA.cpa=cpa.composite.CompositeCPA
+
+# *.cpas children of *
+CompositeCPA.cpas=cpa.callstack.CallStackCPA, cpa.location.LocationCPA, cpa.imchecker.IMCheckerCPA
+cpa.bound.maxDepth=1
+cpa.bound.maxIteration=1
+cpa.bound.rules=depth,loopHead,callInAbstract,recursive,concrete
+
+# analysis traversal configuration
+analysis.traversal.order=bfs
+analysis.traversal.controlled.maxWaitingSize=16
+analysis.traversal.usePriority=true
+
+# anlaysis algorithm
+analysis.useIMCheckerAlgorithm = true
+

@@ -1,0 +1,27 @@
+Subject: [PATCH] fm10k_main.c: fix missing return value check of alloc_skb()
+Signed-off-by: Jiecheng Wu <jasonwood2031@gmail.com>
+
+Function fm10k_init_module() defined in drivers/net/ethernet/intel/fm10k/fm10k_main.c 
+calls alloc_workqueue() to allocate memory for struct workqueue_struct which is 
+dereferenced immediately. As alloc_workqueue() may return NULL on failure, 
+this code piece may cause NULL pointer dereference bug.
+---
+ drivers/net/ethernet/intel/fm10k/fm10k_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_main.c b/drivers/net/ethernet/intel/fm10k/fm10k_main.c
+index 3f53654..78a43d6 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_main.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_main.c
+@@ -41,6 +41,8 @@ static int __init fm10k_init_module(void)
+ 	/* create driver workqueue */
+ 	fm10k_workqueue = alloc_workqueue("%s", WQ_MEM_RECLAIM, 0,
+ 					  fm10k_driver_name);
++	if (!fm10k_workqueue)
++		return -ENOMEM;
+ 
+ 	fm10k_dbg_init();
+ 
+-- 
+2.6.4
+

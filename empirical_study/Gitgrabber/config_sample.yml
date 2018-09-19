@@ -1,0 +1,40 @@
+working_dir : ~/work/GitGrabber_working_space/input/gnutls
+filter :
+  branch : master
+  restrict :
+    commit_count : -1  # commit_count limit or -1 to ignore limit
+    # precise date or -1 to ignore date bound
+    from_date : 2002-01-01
+    to_date : 2010-01-01
+  key_words :
+    first :
+      - bug
+      - fix
+      - check
+      - issue
+      - mistake
+      - incorrect
+      - fault
+      - defect
+      - error
+    second :
+      - integer
+      - memory leak
+      - error path
+      - unchecked return
+      - error handle
+      - check return
+      - error check
+  LOC : 20
+  NOF : 3
+  file_name :
+    - test
+    - news
+    - contribute
+  ignore_case : True
+output :
+  dir : ~/work/GitGrabber_working_space/report/gnutls
+  file_name : report.db
+  # diff_xxx fields denote whether outputting diff patches in corresponding folders
+  diff_mid : True # whether outputting middle result
+  diff_result : True  # whether outputting final result
