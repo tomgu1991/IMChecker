@@ -198,4 +198,4 @@ llvm-dis output.bc -o input4engine.ll
 
 Unfortunately, build-capture tool is under the patient application process. Therefore, we cannot provide the tool here.
 
-But, it can be available for academic use only by emailing us guzx17@mails.tsinghua.edu.cn
+But, it can be available for academic use only by emailing us at guzx14@mails.tsinghau.edu.cn

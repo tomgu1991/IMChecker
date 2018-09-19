@@ -22,7 +22,7 @@ Usage of our tools at [tools/Readme.md](tools/Readme.md)
   * Gitgrabber: tool to extract commits based on approximate keyword matching
   * Commits related to API-misuse bugs in the studied subjects
 * Evaluation data ([evaluation_data](evaluation_data))
-  * Juliet Test Suite cases
+  * API-Misuse-Benchmark
   * original evaluation result
   * New bugs found by IMChecker
 * IMSpec used in this repository ([imspec](imspec))
@@ -51,12 +51,12 @@ Readers can find them in [empirical_study](empirical_study) folder. Any problems
 
 We select a widely used benchmark, i.e., [Juliet Test Suite V1.3](https://samate.nist.gov/SRD/testsuite.php), and two real-world programs in their latest versions: [Linux kernel-4.18-rc4](https://github.com/torvalds/linux/releases/tag/v4.18-rc4) released on 2018-7-9 and [OpenSSL-1-1-1-pre8](https://github.com/openssl/openssl/releases/tag/OpenSSL_1_1_1-pre8) released on 2018-6-20 to evaluate our approach.  We evaluate our approach from two perspectives.
 
-- Controlled dataset. We employ 2010 API-misuse bug instances from the Juliet Test Suite and 50 randomly selected evolutionary bugs and patches from API-misuse bug-fix commits that we identified in the empirical study of OpenSSL (see Section III-A). These cases are used for comparison with state-of-the-art methods in terms of false positives and false negatives. 
-- New bugs in real-world programs. We also apply IMChecker to the latest versions of two real-world programs to evaluate whether our approach can find new bugs.
+- Controlled dataset. We employ 2317 API-misuse bug instances from the Juliet Test Suite. For each test case, it consists of an API-misuse bug and several correct usages. These cases are used for comparison with state-of-the-art methods in terms of false positives and false negatives. 
+- New bugs in real-world programs. We also apply IMChecker to the latest versions of real-world programs to evaluate whether our approach can find new bugs.
 
-We also test this cases on  [APISan](https://github.com/sslab-gatech/apisan),  a sanitizing API usages detection tool through semantic cross-checking.
+We also test this cases on  [APISan](https://github.com/sslab-gatech/apisan)  a sanitizing API usages detection tool through semantic cross-checking and [Clang-SA](http://clang-analyzer.llvm.org/) an open-source static analysis tool .
 
-We upload the Juliet Test Suite dataset at [evaluation_data/juliet](evaluation_data), real-world dataset at [evaluation_data/openssl](evaluation_data/openssl/) and original results at [evaluation_data/results](evaluation_data/results).
+We upload the API-Misuse-Benchmark and original results at [evaluation_data](evaluation_data).
 
 #### New Bugs
 
