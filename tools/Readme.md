@@ -6,7 +6,7 @@ Our tools depends on:
 2. java8
 3. python3 & python2.7
 
-IMChecker is still under development, and contains a lot of bugs and TODO lists. Any bugs or feature requests, feel free to email us at guzx17@mails.tsinghua.edu.cn or open issues.
+IMChecker is still under development, and contains a lot of bugs and TODO lists. Any bugs or feature requests, feel free to email us at guzx14@mails.tsinghua.edu.cn or open issues.
 
 ### Brief usage
 
@@ -40,7 +40,7 @@ Basically, usage of our tool consists of three steps:
    [~/IMChecker/tools/example_code]$clang-3.9 -S -emit-llvm -g example.c
    ```
 
-   For projects with a Makefile, we provide a build-capture tools to help users generate LLVM-IR files. See the build-capture part for details.
+   For projects with a Makefile, we provide a build-capture tools to help users generate LLVM-IR files. See the build-capture part for details. Our algorithm is based on under-constrained symbolic execution, therefore, we analyze from a single function entry. That is, we do not need all the source codes. For the function without definition, we simply skip them. It may lose accuracy, but it provides a strong analysis context for any compilable C files.
 
 3. audit the result
 
@@ -196,6 +196,63 @@ llvm-link a.ll b.ll -o output.bc
 llvm-dis output.bc -o input4engine.ll
 ```
 
-Unfortunately, build-capture tool is under the patient application process. Therefore, we cannot provide the tool here.
+Unfortunately, build-capture tool is under the patient application process. Therefore, we cannot provide the tool here. When available, we will upload ASAP.
 
-But, it can be available for academic use only by emailing us at guzx14@mails.tsinghau.edu.cn
+#### Hints
+
+Here, we provide hints to implement build-capture. The key insight here it to capture the `make -n` command and parse the output. 
+
+Employ OpenSSL as example:
+
+```shell
+> cd openssl
+> make -n
+```
+
+We can catch lines like these,
+
+```shell
+/usr/bin/perl "-I." -Mconfigdata "util/dofile.pl" \
+    "-oMakefile" crypto/include/internal/bn_conf.h.in > crypto/include/internal/bn_conf.h
+/usr/bin/perl "-I." -Mconfigdata "util/dofile.pl" \
+    "-oMakefile" crypto/include/internal/dso_conf.h.in > crypto/include/internal/dso_conf.h
+/usr/bin/perl "-I." -Mconfigdata "util/dofile.pl" \
+    "-oMakefile" include/openssl/opensslconf.h.in > include/openssl/opensslconf.h
+make depend && make _all
+make[1]: Entering directory '/home/guzuxing/Desktop/openssl-OpenSSL_1_1_1-pre8_patched'
+: 
+/usr/bin/perl ./util/add-depends.pl gcc
+: 
+make[1]: Leaving directory '/home/guzuxing/Desktop/openssl-OpenSSL_1_1_1-pre8_patched'
+make[1]: Entering directory '/home/guzuxing/Desktop/openssl-OpenSSL_1_1_1-pre8_patched'
+/usr/bin/perl "-I." -Mconfigdata "util/dofile.pl" \
+    "-oMakefile" include/openssl/opensslconf.h.in > include/openssl/opensslconf.h
+clang  -I. -Iinclude -fPIC -pthread -m64 -Wa,--noexecstack -Wall -O3 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_CPUID_OBJ -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DKECCAK1600_ASM -DRC4_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DGHASH_ASM -DECP_NISTZ256_ASM -DX25519_ASM -DPADLOCK_ASM -DPOLY1305_ASM -DOPENSSLDIR="\"/usr/local/ssl\"" -DENGINESDIR="\"/usr/local/lib/engines-1.1\"" -DNDEBUG  -MMD -MF apps/app_rand.d.tmp -MT apps/app_rand.o -c -o apps/app_rand.o apps/app_rand.c
+```
+
+Then, we can re-execute the commands. For clang/gcc to compile a C file, we can do the command once and replace `-c` by `-E` to generate the preprocessed files *.i
+
+````shell
+clang  -I. -Iinclude -fPIC -pthread -m64 -Wa,--noexecstack -Wall -O3 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_CPUID_OBJ -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DKECCAK1600_ASM -DRC4_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DGHASH_ASM -DECP_NISTZ256_ASM -DX25519_ASM -DPADLOCK_ASM -DPOLY1305_ASM -DOPENSSLDIR="\"/usr/local/ssl\"" -DENGINESDIR="\"/usr/local/lib/engines-1.1\"" -DNDEBUG  -MMD -MF apps/app_rand.d.tmp -MT apps/app_rand.o -E -o apps/app_rand.o apps/app_rand.c
+````
+
+At last, we can copy this *.i file to a folder.
+
+For another example from Linux-kernel. Linux-kernel cannot be support completely by clang. We can directly make a single file by
+
+```shell
+> make drivers/bluetooth/bfusb.o -n
+```
+
+Then, we catch these line
+
+```shell
+make -f ./scripts/Makefile.build obj=arch/x86/entry/syscalls all
+// omit
+make -f ./scripts/Makefile.build obj=drivers/bluetooth drivers/bluetooth/bfusb.o
+set -e; 	   echo '  CC [M]  drivers/bluetooth/bfusb.o'; 
+gcc -Wp,-MD,drivers/bluetooth/.bfusb.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/5/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -std=gnu89 -fno-PIE -DCC_HAVE_ASM_GOTO -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -funit-at-a-time -DCONFIG_X86_X32_ABI -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_FXSAVEQ=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_CRC32=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -DRETPOLINE -fno-delete-null-pointer-checks -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wno-unused-but-set-variable -fno-var-tracking-assignments -g -gdwarf-4 -pg -mfentry -DCC_USING_FENTRY -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -mrecord-mcount  -DMODULE  -DKBUILD_BASENAME='"bfusb"' -DKBUILD_MODNAME='"bfusb"' -c -o drivers/bluetooth/.tmp_bfusb.o drivers/bluetooth/bfusb.c
+// omit
+```
+
+Therefore, we can do as above to produce a single *.i file. Then, use clang to generate *.ll file. For the files cannot supported by clang, we just omit them.

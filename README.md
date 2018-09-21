@@ -14,6 +14,8 @@ Our tool demonstration video is available at https://youtu.be/YGDxeyOEVIM
 
 Usage of our tools at [tools/Readme.md](tools/Readme.md)
 
+IMChecker is still under development, and contains a lot of bugs and TODO lists. Any bugs or feature requests, feel free to email us at guzx14@mails.tsinghua.edu.cn or open issues.
+
 ### What is in this repo?
 
 * Empirical study on API-misuse bugs ([empirical_study](empirical_study))
