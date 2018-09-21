@@ -134,4 +134,5 @@
 ## [FreeRADIUS server](https://github.com/FreeRADIUS/freeradius-server)
 
 1. fixed - [2309](https://github.com/FreeRADIUS/freeradius-server/issues/2309)
-2. fixed - [2310](https://github.com/FreeRADIUS/freeradius-server/issues/2309)
+2. fixed - [2310](https://github.com/FreeRADIUS/freeradius-server/issues/2310)
+
