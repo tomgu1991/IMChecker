@@ -15,18 +15,19 @@
 
 ## Summary
 
-|    Project    | Bugs |
-| :-----------: | ---: |
-|    OpenSSL    |   17 |
-|     Linux     |   30 |
-|      dma      |    1 |
-|     exim      |    2 |
-|    hexchat    |    2 |
-|    httping    |    1 |
-|   ipmitool    |    1 |
-| open-vm-tools |    2 |
-|   keepalive   |    2 |
-|     Total     |   58 |
+|      Project      | Bugs |
+| :---------------: | ---: |
+|      OpenSSL      |   17 |
+|       Linux       |   30 |
+|        dma        |    1 |
+|       exim        |    2 |
+|      hexchat      |    2 |
+|      httping      |    1 |
+|     ipmitool      |    1 |
+|   open-vm-tools   |    2 |
+|     keepalive     |    2 |
+| freeradius-server |    2 |
+|       Total       |   60 |
 
 
 
@@ -130,3 +131,7 @@
 1. fixed - [1003](https://github.com/acassen/keepalived/issues/1003)
 2. fixed - [1004](https://github.com/acassen/keepalived/issues/1004)
 
+## [FreeRADIUS server](https://github.com/FreeRADIUS/freeradius-server)
+
+1. fixed - [2309](https://github.com/FreeRADIUS/freeradius-server/issues/2309)
+2. fixed - [2310](https://github.com/FreeRADIUS/freeradius-server/issues/2309)

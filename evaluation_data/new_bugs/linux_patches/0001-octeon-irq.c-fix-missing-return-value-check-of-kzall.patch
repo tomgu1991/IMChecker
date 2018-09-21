@@ -1,0 +1,26 @@
+From 0ccfdee76d91ea7269f55df5e276edf976d0f297 Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 15:05:10 +0800
+Subject: [PATCH] octeon-irq.c: fix missing return value check of kzalloc()
+
+Function octeon_irq_cib_map() defined in arch/mips/cavium-octeon/octeon-irq.c calls kzalloc() to allocate memory for struct octeon_irq_cib_chip_data which is dereferenced immediately. As kzalloc() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ arch/mips/cavium-octeon/octeon-irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 8272d8c..5a2fc7d 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -2199,6 +2199,8 @@ static int octeon_irq_cib_map(struct irq_domain *d,
+ 	}
+ 
+ 	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
++	if (!cd)
++		return -ENOMEM;
+ 	cd->host_data = host_data;
+ 	cd->bit = hw;
+ 
+-- 
+2.6.4
+

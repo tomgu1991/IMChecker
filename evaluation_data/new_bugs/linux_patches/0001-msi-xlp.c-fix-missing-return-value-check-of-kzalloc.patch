@@ -1,0 +1,26 @@
+From eee589745f9e5f0986b7170a54e64a78984d123d Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 15:26:54 +0800
+Subject: [PATCH] msi-xlp.c: fix missing return value check of kzalloc()
+
+Function xlp_init_node_msi_irqs() defined in arch/mips/pci/msi-xlp.c calls kzalloc() to allocate memory for struct xlp_msi_data which is dereferenced immediately. As kzalloc() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ arch/mips/pci/msi-xlp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
+index bb14335..c03bce1 100644
+--- a/arch/mips/pci/msi-xlp.c
++++ b/arch/mips/pci/msi-xlp.c
+@@ -474,6 +474,8 @@ void __init xlp_init_node_msi_irqs(int node, int link)
+ 
+ 	/* Alloc an MSI block for the link */
+ 	md = kzalloc(sizeof(*md), GFP_KERNEL);
++	if (!md)
++		return;
+ 	spin_lock_init(&md->msi_lock);
+ 	md->msi_enabled_mask = 0;
+ 	md->msi_alloc_mask = 0;
+-- 
+2.6.4
+

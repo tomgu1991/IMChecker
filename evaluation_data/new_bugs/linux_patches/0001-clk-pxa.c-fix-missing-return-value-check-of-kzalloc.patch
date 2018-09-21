@@ -1,0 +1,26 @@
+From ad6fda130d8198f299814e70d256c81481c2855f Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Thu, 16 Aug 2018 22:39:53 +0800
+Subject: [PATCH] clk-pxa.c: fix missing return value check of kzalloc()
+
+Function clk_pxa_cken_init() defined in drivers/clk/pxa/clk-pxa.c calls kzalloc() to allocate memory for struct pxa_clk which is dereferenced immediately. As kzalloc() may return NULL when OOM happens, this code piece may cause NULL pointer dereference bug.
+---
+ drivers/clk/pxa/clk-pxa.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/clk/pxa/clk-pxa.c b/drivers/clk/pxa/clk-pxa.c
+index b80dc9d..97485a5 100644
+--- a/drivers/clk/pxa/clk-pxa.c
++++ b/drivers/clk/pxa/clk-pxa.c
+@@ -105,6 +105,8 @@ int __init clk_pxa_cken_init(const struct desc_clk_cken *clks, int nb_clks)
+ 
+ 	for (i = 0; i < nb_clks; i++) {
+ 		pxa_clk = kzalloc(sizeof(*pxa_clk), GFP_KERNEL);
++		if (!pxa_clk)
++			return ERR_PTR(-ENOMEM);
+ 		pxa_clk->is_in_low_power = clks[i].is_in_low_power;
+ 		pxa_clk->lp = clks[i].lp;
+ 		pxa_clk->hp = clks[i].hp;
+-- 
+2.6.4
+

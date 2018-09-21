@@ -1,0 +1,26 @@
+From 6f1c00cc0362bcc3a193dfaf24c81ee79341725d Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 15:22:01 +0800
+Subject: [PATCH] board-v7.c: fix missing return value check of kzalloc()
+
+Function i2c_quirk() defined in arch/arm/mach-mvebu/board-v7.c calls kzalloc() to allocate memory for struct property which is dereferenced immediately. As kzalloc() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ arch/arm/mach-mvebu/board-v7.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/mach-mvebu/board-v7.c b/arch/arm/mach-mvebu/board-v7.c
+index ccca951..5757858 100644
+--- a/arch/arm/mach-mvebu/board-v7.c
++++ b/arch/arm/mach-mvebu/board-v7.c
+@@ -128,6 +128,8 @@ static void __init i2c_quirk(void)
+ 		struct property *new_compat;
+ 
+ 		new_compat = kzalloc(sizeof(*new_compat), GFP_KERNEL);
++		if (!new_compat)
++			return;
+ 
+ 		new_compat->name = kstrdup("compatible", GFP_KERNEL);
+ 		new_compat->length = sizeof("marvell,mv78230-a0-i2c");
+-- 
+2.6.4
+

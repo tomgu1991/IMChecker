@@ -1,0 +1,27 @@
+From 61bf481a280ec834a9b0d52acb8b0da64934df20 Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 13:08:13 +0800
+Subject: [PATCH] dpc.c: fix missing return value check of
+ pci_find_ext_capability()
+
+Function dpc_probe() defined in drivers/pci/pcie/dpc.c calls pci_find_ext_capability(). Function pci_find_ext_capability() returns the address of the requested extended capability structure within the device's PCI configuration space or 0 if the device does not support it. The return value of this function should be checked against 0.
+---
+ drivers/pci/pcie/dpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index f03279f..30ff550 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -226,6 +226,8 @@ static int dpc_probe(struct pcie_device *dev)
+ 		return -ENOMEM;
+ 
+ 	dpc->cap_pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DPC);
++	if (!dpc->cap_pos)
++		return -ENODEV;
+ 	dpc->dev = dev;
+ 	set_service_data(dev, dpc);
+ 
+-- 
+2.6.4
+

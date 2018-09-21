@@ -1,0 +1,29 @@
+From 9ad530a1c92b3981e740bb2415fa31b8b9639601 Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Mon, 6 Aug 2018 15:29:48 +0800
+Subject: [PATCH] pktcdvd.c: Fix wrong return code when alloc_disk() fails.
+
+Function pkt_setup_dev() defined in drivers/block/pktcdvd.c calls alloc_disk(). However, it forgets to set the error return code when alloc_disk() fails. Instead, when alloc_disk() fails, it simply jumps to label 'out_mem' leaving the variable ret unchanged.
+---
+ drivers/block/pktcdvd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/pktcdvd.c b/drivers/block/pktcdvd.c
+index b3f83cd..f63fa1f 100644
+--- a/drivers/block/pktcdvd.c
++++ b/drivers/block/pktcdvd.c
+@@ -2716,8 +2716,10 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
+ 	pd->write_congestion_off = write_congestion_off;
+ 
+ 	disk = alloc_disk(1);
+-	if (!disk)
++	if (!disk) {
++		ret = -ENOMEM;
+ 		goto out_mem;
++	}
+ 	pd->disk = disk;
+ 	disk->major = pktdev_major;
+ 	disk->first_minor = idx;
+-- 
+2.6.4
+

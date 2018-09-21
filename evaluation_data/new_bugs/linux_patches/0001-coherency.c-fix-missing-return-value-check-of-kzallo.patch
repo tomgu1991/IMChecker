@@ -1,0 +1,26 @@
+From e96de7f3454b1b5c27700ea3c53ae99139dfda7b Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 15:24:50 +0800
+Subject: [PATCH] coherency.c: fix missing return value check of kzalloc()
+
+Function armada_375_380_coherency_init() defined in arch/arm/mach-mvebu/coherency.c calls kzalloc() to allocate memory for struct property which is dereferenced immediately. As kzalloc() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ arch/arm/mach-mvebu/coherency.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/mach-mvebu/coherency.c b/arch/arm/mach-mvebu/coherency.c
+index 8f8748a..d3bc8a6 100644
+--- a/arch/arm/mach-mvebu/coherency.c
++++ b/arch/arm/mach-mvebu/coherency.c
+@@ -194,6 +194,8 @@ static void __init armada_375_380_coherency_init(struct device_node *np)
+ 		struct property *p;
+ 
+ 		p = kzalloc(sizeof(*p), GFP_KERNEL);
++		if (!p)
++			return;
+ 		p->name = kstrdup("arm,io-coherent", GFP_KERNEL);
+ 		of_add_property(cache_dn, p);
+ 	}
+-- 
+2.6.4
+

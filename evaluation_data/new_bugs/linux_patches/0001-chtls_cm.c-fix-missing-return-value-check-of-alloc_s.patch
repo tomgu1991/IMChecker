@@ -1,0 +1,26 @@
+From 87170f9d2d3b12a862012360b9d4ca0d64c7af5d Mon Sep 17 00:00:00 2001
+From: Jiecheng Wu <jasonwood2031@gmail.com>
+Date: Fri, 17 Aug 2018 10:26:21 +0800
+Subject: [PATCH] chtls_cm.c: fix missing return value check of alloc_skb()
+
+Function chtls_close_conn() defined in drivers/crypto/chelsio/chtls/chtls_cm.c calls alloc_skb() to allocate memory for struct sk_buff which is dereferenced immediately. As alloc_skb() may return NULL on failure, this code piece may cause NULL pointer dereference bug.
+---
+ drivers/crypto/chelsio/chtls/chtls_cm.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/crypto/chelsio/chtls/chtls_cm.c b/drivers/crypto/chelsio/chtls/chtls_cm.c
+index 0997e16..0e8eec6 100644
+--- a/drivers/crypto/chelsio/chtls/chtls_cm.c
++++ b/drivers/crypto/chelsio/chtls/chtls_cm.c
+@@ -267,6 +267,8 @@ static void chtls_close_conn(struct sock *sk)
+ 	tid = csk->tid;
+ 
+ 	skb = alloc_skb(len, GFP_KERNEL | __GFP_NOFAIL);
++	if (!skb)
++		return -ENOMEM;
+ 	req = (struct cpl_close_con_req *)__skb_put(skb, len);
+ 	memset(req, 0, len);
+ 	req->wr.wr_hi = htonl(FW_WR_OP_V(FW_TP_WR) |
+-- 
+2.6.4
+
