@@ -27,6 +27,7 @@
 |   open-vm-tools   |    2 |
 |     keepalive     |    2 |
 | freeradius-server |    2 |
+|      sslplit      |    2 |
 |       Total       |   60 |
 
 
@@ -136,3 +137,8 @@
 1. fixed - [2309](https://github.com/FreeRADIUS/freeradius-server/issues/2309)
 2. fixed - [2310](https://github.com/FreeRADIUS/freeradius-server/issues/2310)
 
+## [sslsplit](https://github.com/droe/sslsplit/)
+
+fixed - [224](https://github.com/droe/sslsplit/issues/224)
+
+fixed - [225](https://github.com/droe/sslsplit/issues/225)

@@ -6,7 +6,7 @@
 
 Libraries offer reusable functionality through Application Programming Interfaces (APIs) with usage constraints, such as call conditions or orders. Constraint violations, i.e., [API misuses](http://sven-amann.de/publications/2018-03-A-Systematic-Evalution-of-Static-API-Misuse-Detectors/), commonly lead to bugs and security issues. Although researchers have developed various API-misuse detectors in the past few decades, recent studies show that API misuse is prevalent in real-world projects. The existing approaches either suffer from the sparse usage problem (i.e., bugs that rarely occur) or report false alarms due to inaccurate semantics. To overcome these limitations, we introduce IMChecker to effectively detect API-misuse bugs. The key insight behind IMChecker is a constraint-directed static analysis technique powered by a domain-specific language (DSL) for specifying API usage constraints. Through studying real-world API-misuse bugs, we propose IMSpec DSL, which covers a majority of the types of API usage constraints and enables simple but precise specification. Furthermore, we design and implement IMChecker to automatically parse IMSpec into checking targets and employ a static analysis engine to identify potential API misuses and prune false positives with rich semantics. We have instantiated IMChecker for C programs and evaluate it on widely used benchmarks and large-scale real-world programs.  
 
-Currently, 60 previously unknown bugs have been found and 36 have been confirmed and fixed in Linux kernel, OpenSSL and packages in Ubuntu 16.04. We are trying our best to apply IMChecker to more programs.
+Currently, 62 previously unknown bugs have been found and 38 have been confirmed and fixed in Linux kernel, OpenSSL and packages in Ubuntu 16.04. We are trying our best to apply IMChecker to more programs.
 
 Our research manuscript and tool manuscript are under review process of ICSE'19. We will upload them as soon as the review process finish. (Well, you can email us to access them by academic purpose only.)
 
@@ -76,7 +76,8 @@ Up to now, 56 previously unknown bugs have been found and  36 have been confirme
 |   open-vm-tools   |    2 |
 |    keepalived     |    2 |
 | freeradius-server |    2 |
-|       Total       |   60 |
+|      sslplit      |    2 |
+|       Total       |   62 |
 
 We upload the details  in [evaluation_data/new_bugs](evaluation_data/new_bugs) 
 
