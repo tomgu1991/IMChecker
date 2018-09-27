@@ -28,7 +28,7 @@
 |     keepalive     |    2 |
 | freeradius-server |    2 |
 |      sslplit      |    2 |
-|       Total       |   60 |
+|       Total       |   62 |
 
 
 
