@@ -10,7 +10,12 @@ Currently, 62 previously unknown bugs have been found and 38 have been confirmed
 
 Our research manuscript and tool manuscript are under review process of ICSE'19. We will upload them as soon as the review process finish. (Well, you can email us to access them by academic purpose only.)
 
-Our tool demonstration video is available at https://youtu.be/YGDxeyOEVIM
+Our tool demonstration video is available at 
+English Version: 
+https://youtu.be/YGDxeyOEVIM
+Chinese Version: 
+https://www.youtube.com/watch?v=3ZAneGTwUto
+https://pan.baidu.com/s/1diGQ0R6Wk5sHHmlOTk9kbg
 
 Usage of our tools at [tools/Readme.md](tools/Readme.md)
 
