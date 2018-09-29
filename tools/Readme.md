@@ -10,7 +10,16 @@ IMChecker is still under development, and contains a lot of bugs and TODO lists.
 
 ### Brief usage
 
-We have upload a demonstration at https://youtu.be/YGDxeyOEVIM
+Our tool demonstration video is available at 
+
+English Version: 
+https://youtu.be/YGDxeyOEVIM
+
+Chinese Version: 
+
+https://www.youtube.com/watch?v=3ZAneGTwUto
+
+https://pan.baidu.com/s/1diGQ0R6Wk5sHHmlOTk9kbg
 
 Basically, usage of our tool consists of three steps:
 
