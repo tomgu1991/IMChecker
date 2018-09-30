@@ -15,20 +15,26 @@
 
 ## Summary
 
-|      Project      | Bugs |
+|      Project      | Bugs(Waiting Response/Confirmed/Fixed)|
 | :---------------: | ---: |
-|      OpenSSL      |   17 |
-|       Linux       |   30 |
-|        dma        |    1 |
-|       exim        |    2 |
-|      hexchat      |    2 |
-|      httping      |    1 |
-|     ipmitool      |    1 |
-|   open-vm-tools   |    2 |
-|     keepalive     |    2 |
-| freeradius-server |    2 |
-|      sslplit      |    2 |
-|       Total       |   62 |
+|      OpenSSL      |   17(0/5/12) |
+|       Linux       |   30(5/20/5) |
+|        dma        |    1(0/0/1) |
+|       exim        |    2(0/0/2) |
+|      hexchat      |    2(1/1/0) |
+|      httping      |    1(0/1/0) |
+|     ipmitool      |    1(0/1/0) |
+|   open-vm-tools   |    2(0/0/2) |
+|      irssi        |    2(1/1/0) |
+|     keepalive     |    2(0/0/2) |
+|     thc-ipv6      |    2(0/0/2) |
+| freeradius-server |    2(0/0/2) |
+|      trafficserver|    3(3/0/0) |
+|      tinc         |    2(2/0/0) |
+|      sslplit      |    2(0/0/2) |
+|     rdesktop      |    2(2/0/0) |
+|      proxytunnel  |    2(2/0/0) |
+|       Total       |   75(16/29/30) |
 
 
 
@@ -127,18 +133,49 @@
 1. fixed - [291](https://github.com/vmware/open-vm-tools/issues/291)
 2. fixed - [292](https://github.com/vmware/open-vm-tools/issues/292)
 
+## [irssi](https://github.com/irssi/irssi)
+
+1. open - [944](https://github.com/irssi/irssi/issues/944)
+2. open - [943](https://github.com/irssi/irssi/issues/943)
+
 ## [keepalive](https://github.com/acassen/keepalived)
 
 1. fixed - [1003](https://github.com/acassen/keepalived/issues/1003)
 2. fixed - [1004](https://github.com/acassen/keepalived/issues/1004)
+
+## [thc-ipv6](https://github.com/vanhauser-thc/thc-ipv6)
+
+1. fixed - [28](https://github.com/vanhauser-thc/thc-ipv6/issues/28)
+2. fixed - [29](https://github.com/vanhauser-thc/thc-ipv6/issues/29)
+
 
 ## [FreeRADIUS server](https://github.com/FreeRADIUS/freeradius-server)
 
 1. fixed - [2309](https://github.com/FreeRADIUS/freeradius-server/issues/2309)
 2. fixed - [2310](https://github.com/FreeRADIUS/freeradius-server/issues/2310)
 
+## [trafficserver](https://github.com/apache/trafficserver/)
+
+1. open - [4292](https://github.com/apache/trafficserver/issues/4292)
+2. open - [4293](https://github.com/apache/trafficserver/issues/4293)
+3. open - [4294](https://github.com/apache/trafficserver/issues/4294)
+
+## [tinc](https://github.com/gsliepen/tinc)
+
+1. open - [205](https://github.com/gsliepen/tinc/issues/205)
+2. open - [206](https://github.com/gsliepen/tinc/issues/206)
+
 ## [sslsplit](https://github.com/droe/sslsplit/)
 
-fixed - [224](https://github.com/droe/sslsplit/issues/224)
+1. fixed - [224](https://github.com/droe/sslsplit/issues/224)
+2. fixed - [225](https://github.com/droe/sslsplit/issues/225)
 
-fixed - [225](https://github.com/droe/sslsplit/issues/225)
+## [rdesktop](https://github.com/rdesktop/rdesktop)
+
+1. open - [280](https://github.com/rdesktop/rdesktop/issues/280)
+2. open - [281](https://github.com/rdesktop/rdesktop/issues/281)
+
+## [proxytunnel](https://github.com/proxytunnel/proxytunnel)
+
+1. open - [36](https://github.com/proxytunnel/proxytunnel/issues/36)
+2. open - [37](https://github.com/proxytunnel/proxytunnel/issues/37)
