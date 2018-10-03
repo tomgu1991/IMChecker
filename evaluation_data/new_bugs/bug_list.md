@@ -111,7 +111,7 @@
 1. fixed - [59](https://github.com/corecode/dma/issues/59)
 
 ## [exim](https://github.com/Exim/exim)
-1. confirmed - [2316](https://bugs.exim.org/show_bug.cgi?id=2316)
+1. fixed - [2316](https://bugs.exim.org/show_bug.cgi?id=2316)
 
 2. fixed - [2317](https://bugs.exim.org/show_bug.cgi?id=2317)
 
