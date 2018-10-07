@@ -4,7 +4,7 @@
 >
 >open - open issue
 >
->patched - create patch for the opened issue
+>patched - create patch for the opened issue but need to correct code format/style or other reasons
 >
 >assessed - confirm by developer, low priority
 >
