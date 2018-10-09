@@ -30,11 +30,11 @@
 |     thc-ipv6      |    2(0/0/2) |
 | freeradius-server |    2(0/0/2) |
 |      trafficserver|    3(3/0/0) |
-|      tinc         |    2(2/0/0) |
+|      tinc         |    2(0/0/2) |
 |      sslplit      |    2(0/0/2) |
 |     rdesktop      |    2(2/0/0) |
 |      proxytunnel  |    2(2/0/0) |
-|       Total       |   75(16/29/30) |
+|       Total       |   75(16/29/32) |
 
 
 
@@ -162,8 +162,8 @@
 
 ## [tinc](https://github.com/gsliepen/tinc)
 
-1. open - [205](https://github.com/gsliepen/tinc/issues/205)
-2. open - [206](https://github.com/gsliepen/tinc/issues/206)
+1. fixed - [205](https://github.com/gsliepen/tinc/issues/205)
+2. fixed - [206](https://github.com/gsliepen/tinc/issues/206)
 
 ## [sslsplit](https://github.com/droe/sslsplit/)
 
