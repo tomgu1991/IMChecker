@@ -3,6 +3,12 @@
 Our tools depends on:
 
 1. [clang-3.9](http://releases.llvm.org/3.9.0/)
+   * after installing clang-3.9, we have to setup a symlink for clang, llvm-dis and llvm-link, for we use these command in our tool to preprocess the source code
+   ```shell
+   sudo ln -s /usr/bin/clang-3.9 /usr/local/bin/clang
+   sudo ln -s /usr/bin/llvm-link-3.9 /usr/local/bin/llvm-link
+   sudo ln -s /usr/bin/dis-3.9 /usr/local/bin/llvm-dis
+   ```
 2. java8
 3. python3 & python2.7
 
