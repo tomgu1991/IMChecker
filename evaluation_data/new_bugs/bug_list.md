@@ -135,7 +135,7 @@
 
 ## [irssi](https://github.com/irssi/irssi)
 
-1. open - [944](https://github.com/irssi/irssi/issues/944)
+1. confirmed - [944](https://github.com/irssi/irssi/issues/944)
 2. open - [943](https://github.com/irssi/irssi/issues/943)
 
 ## [keepalive](https://github.com/acassen/keepalived)
